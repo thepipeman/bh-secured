@@ -34,3 +34,5 @@ CREATE UNIQUE INDEX bus_uq_plate_number
 CREATE UNIQUE INDEX bus_uq_number
   ON vh.bus(number)
   WHERE t_active IS TRUE;
+
+CREATE CAST (CHARACTER VARYING as vh.bus_type) WITH INOUT AS IMPLICIT;
