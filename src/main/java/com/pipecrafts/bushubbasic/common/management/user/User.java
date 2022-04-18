@@ -8,10 +8,11 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@Table(schema = "mng", name = "user")
 public class User implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String username;
   private String password;
