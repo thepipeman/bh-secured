@@ -1,4 +1,4 @@
-package com.pipecrafts.bushubbasic.common.config.datasource;
+package com.pipecrafts.bushubbasic.config.datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
