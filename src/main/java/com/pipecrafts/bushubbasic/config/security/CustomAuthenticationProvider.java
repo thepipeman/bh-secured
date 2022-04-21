@@ -13,7 +13,7 @@ import java.util.Arrays;
  * <p>
  * e.g. Retrieving username and password using encryption
  */
-@Component
+//@Component
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 

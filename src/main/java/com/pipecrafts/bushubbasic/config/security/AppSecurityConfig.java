@@ -1,46 +1,20 @@
 package com.pipecrafts.bushubbasic.config.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @RequiredArgsConstructor
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final CustomAuthenticationProvider customAuthenticationProvider;
-
-  @Bean
-  public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-    final var userDetailsService = new InMemoryUserDetailsManager();
-
-    final var password = passwordEncoder.encode("12345");
-    final var user = User.withUsername("john")
-      .password(password)
-      .authorities("read")
-      .build();
-    userDetailsService.createUser(user);
-
-    return userDetailsService;
-  }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.authenticationProvider(customAuthenticationProvider);
-  }
+//  private final CustomAuthenticationProvider customAuthenticationProvider;
+//
+//  @Override
+//  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//    auth.authenticationProvider(customAuthenticationProvider);
+//  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -53,7 +27,5 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     // authorizes all request
 //    http.authorizeRequests()
 //      .anyRequest().permitAll();
-
-
   }
 }
