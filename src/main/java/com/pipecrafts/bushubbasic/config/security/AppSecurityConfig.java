@@ -16,5 +16,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     // basic / default spring boot config
     http.authorizeRequests()
       .anyRequest().authenticated();
+
+    http.csrf().disable();
   }
 }
