@@ -37,3 +37,12 @@ server:
   port: 8500
   servlet:
     context-path: /api
+
+
+#------------------------------------
+# Logging settings
+#------------------------------------
+
+logging:
+  level:
+    com.pipecrafts: DEBUG

@@ -1,11 +1,12 @@
 package com.pipecrafts.bushubbasic.common.security;
 
+import com.pipecrafts.bushubbasic.common.management.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class SecurityUser implements UserDetails {
@@ -14,7 +15,7 @@ public class SecurityUser implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    return List.of(() -> this.user.getRole().name());
   }
 
   @Override

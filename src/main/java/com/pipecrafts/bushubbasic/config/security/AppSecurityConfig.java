@@ -9,13 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @RequiredArgsConstructor
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//  private final CustomAuthenticationProvider customAuthenticationProvider;
-//
-//  @Override
-//  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//    auth.authenticationProvider(customAuthenticationProvider);
-//  }
-
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
@@ -23,9 +16,5 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     // basic / default spring boot config
     http.authorizeRequests()
       .anyRequest().authenticated();
-
-    // authorizes all request
-//    http.authorizeRequests()
-//      .anyRequest().permitAll();
   }
 }

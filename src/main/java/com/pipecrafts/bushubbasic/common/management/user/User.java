@@ -1,12 +1,14 @@
 package com.pipecrafts.bushubbasic.common.management.user;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(schema = "mng", name = "user")
 public class User {
@@ -15,21 +17,21 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull
+  @NonNull
   private String username;
 
-  @NotNull
+  @NonNull
   private String password;
 
-  @NotNull
   private String firstName;
 
-  @NotNull
   private String middleName;
 
-  @NotNull
   private String lastName;
 
-  @NotNull
   private LocalDate birthDate;
+
+  @NonNull
+  @Enumerated(EnumType.STRING)
+  UserRole role;
 }
