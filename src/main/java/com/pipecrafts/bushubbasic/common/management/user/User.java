@@ -1,13 +1,10 @@
 package com.pipecrafts.bushubbasic.common.management.user;
 
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @Entity
@@ -35,7 +32,4 @@ public class User {
 
   @NotNull
   private LocalDate birthDate;
-
-//  @NotNull
-//  private Set<GrantedAuthority> authorities;
 }
