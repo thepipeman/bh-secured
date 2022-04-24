@@ -1,18 +1,16 @@
 package com.pipecrafts.bushubbasic.common.security;
 
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Value
-@Builder
 @RequiredArgsConstructor
 public class SecurityUser implements UserDetails {
 
-  User user;
+  private final User user;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -47,5 +45,9 @@ public class SecurityUser implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  public static SecurityUser of(User user) {
+    return new SecurityUser(user);
   }
 }
