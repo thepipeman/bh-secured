@@ -12,11 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class UserManagementConfig {
 
-
-  @Bean
-  public UserDetailsService userDetailsService(UserUtil userUtil) {
-    return new InMemoryUserDetailsService(userUtil.createInMemoryUsers());
-  }
+//  @Bean
+//  public UserDetailsService userDetailsService(UserUtil userUtil) {
+//    return new InMemoryUserDetailsService(userUtil.createInMemoryUsers());
+//  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
