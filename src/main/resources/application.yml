@@ -28,6 +28,8 @@ spring:
     out-of-order: true
     table: schema_version
 
+#  security:
+#    strategy: MODE_INHERITABLETHREADLOCAL
 
 #------------------------------------
 # Server settings
