@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final AuthenticationProvider authenticationProvider;
+  private final AuthEntryPoint authEntryPoint;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -18,6 +19,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     http
       .authenticationProvider(authenticationProvider)
       .httpBasic()
+      .authenticationEntryPoint(authEntryPoint)
       .and().authorizeRequests()
       .anyRequest().authenticated();
 //    // basic / default spring boot config
