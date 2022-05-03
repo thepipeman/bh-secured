@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.concurrent.DelegatingSecurityContextCallable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.*;
 
 @Slf4j
 @RestController
@@ -49,13 +51,31 @@ public class UserController {
 
   @Async
   @GetMapping("/mydetails/async")
-  public ResponseEntity<User> readMyDetailsAsync() {
-    SecurityContext context = SecurityContextHolder.getContext();
-    String username = context.getAuthentication().getName();
+  public ResponseEntity<User> readMyDetailsAsync(Authentication authentication) {
+//    SecurityContext context = SecurityContextHolder.getContext();
+    String username = authentication.getName();
 //    final String username = authentication.getName();
     final User user = userService.findByUsername(username)
       .orElseThrow(() -> new UsernameNotFoundException("User name not found"));
     return ResponseEntity.ok(user);
   }
+
+  @GetMapping("/mydetails/callable")
+  public ResponseEntity<User> readMyDetailsFromSelfManagedThread() throws ExecutionException, InterruptedException {
+    final Callable<String> callable = () -> {
+      SecurityContext context = SecurityContextHolder.getContext();
+      return context.getAuthentication().getName();
+    };
+
+    final ExecutorService sc = Executors.newCachedThreadPool();
+    try {
+      final var contextTask = new DelegatingSecurityContextCallable<>(callable);
+      final var user = userService.findByUsername(sc.submit(contextTask).get());
+      return user.map(ResponseEntity::ok).orElseThrow(() -> new UsernameNotFoundException("username not found"));
+    } finally {
+      sc.shutdown();
+    }
+  }
+
 
 }
