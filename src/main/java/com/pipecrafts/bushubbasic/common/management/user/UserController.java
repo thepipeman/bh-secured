@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.concurrent.DelegatingSecurityContextCallable;
+import org.springframework.security.concurrent.DelegatingSecurityContextExecutorService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -77,5 +78,20 @@ public class UserController {
     }
   }
 
+  @GetMapping("/mydetails/exec-service")
+  public ResponseEntity<User> readMyDetailsFromExecService() throws ExecutionException, InterruptedException {
+    final Callable<String> callable = () -> {
+      SecurityContext context = SecurityContextHolder.getContext();
+      return context.getAuthentication().getName();
+    };
 
+    ExecutorService es = Executors.newCachedThreadPool();
+    try {
+      es = new DelegatingSecurityContextExecutorService(es);
+      final var user = userService.findByUsername(es.submit(callable).get());
+      return user.map(ResponseEntity::ok).orElseThrow(() -> new UsernameNotFoundException("username not found"));
+    } finally {
+      es.shutdown();
+    }
+  }
 }
