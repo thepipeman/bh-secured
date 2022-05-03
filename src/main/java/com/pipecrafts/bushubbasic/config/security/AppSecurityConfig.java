@@ -12,11 +12,17 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final AuthenticationProvider authenticationProvider;
   private final AuthEntryPoint authEntryPoint;
+  private final UserAuthSuccessHandler userAuthSuccessHandler;
+  private final UserAuthFailureHandler userAuthFailureHandler;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     http
+      .formLogin()
+      .successHandler(userAuthSuccessHandler)
+      .failureHandler(userAuthFailureHandler)
+      .and()
       .authenticationProvider(authenticationProvider)
       .httpBasic()
       .authenticationEntryPoint(authEntryPoint)
