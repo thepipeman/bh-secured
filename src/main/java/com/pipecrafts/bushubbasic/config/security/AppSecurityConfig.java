@@ -1,5 +1,6 @@
 package com.pipecrafts.bushubbasic.config.security;
 
+import com.pipecrafts.bushubbasic.common.management.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -26,7 +27,12 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
       .authenticationProvider(authenticationProvider)
       .httpBasic()
       .authenticationEntryPoint(authEntryPoint)
-      .and().authorizeRequests()
+      .and()
+      .authorizeRequests()
+      .antMatchers("/buses")
+      .hasAnyRole(UserRole.ADMIN.name(), UserRole.CUSTOMER.name())
+      .antMatchers("/users")
+      .hasAnyRole(UserRole.ADMIN.name())
       .anyRequest().authenticated();
 //    // basic / default spring boot config
 //    http.authorizeRequests()

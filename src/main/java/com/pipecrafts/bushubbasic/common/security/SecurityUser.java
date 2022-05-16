@@ -15,7 +15,7 @@ public class SecurityUser implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(() -> this.user.getRole().name());
+    return List.of(() -> this.user.getRole().getGrantedAuthority());
   }
 
   @Override
