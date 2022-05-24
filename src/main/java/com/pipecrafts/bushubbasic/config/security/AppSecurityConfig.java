@@ -1,6 +1,7 @@
 package com.pipecrafts.bushubbasic.config.security;
 
 import com.pipecrafts.bushubbasic.common.management.user.UserRole;
+import com.pipecrafts.bushubbasic.common.security.filter.AuthSuccessLoggingFilter;
 import com.pipecrafts.bushubbasic.common.security.filter.RequestValidationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -17,17 +18,15 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
   private final AuthEntryPoint authEntryPoint;
   private final UserAuthSuccessHandler userAuthSuccessHandler;
   private final UserAuthFailureHandler userAuthFailureHandler;
-  final RequestValidationFilter requestValidationFilter;
+  private final RequestValidationFilter requestValidationFilter;
+  private final AuthSuccessLoggingFilter authSuccessLoggingFilter;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     http
-//      .formLogin()
-//      .successHandler(userAuthSuccessHandler)
-//      .failureHandler(userAuthFailureHandler)
-//      .and()
       .addFilterBefore(requestValidationFilter, BasicAuthenticationFilter.class)
+      .addFilterAfter(authSuccessLoggingFilter, BasicAuthenticationFilter.class)
       .authenticationProvider(authenticationProvider)
       .httpBasic()
       .authenticationEntryPoint(authEntryPoint)
@@ -38,6 +37,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/users")
       .hasAnyRole(UserRole.ADMIN.name())
       .anyRequest().authenticated();
+
 //    // basic / default spring boot config
 //    http.authorizeRequests()
 //      .anyRequest().authenticated();

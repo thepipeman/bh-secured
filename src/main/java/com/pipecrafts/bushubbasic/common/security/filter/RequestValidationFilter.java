@@ -11,7 +11,7 @@ import java.io.IOException;
 @Component
 public class RequestValidationFilter implements Filter {
 
-  private final static String REQ_ID_HEADER = "REQUEST-ID";
+  final static String REQ_ID_HEADER = "REQUEST-ID";
 
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
