@@ -25,17 +25,16 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     http
       .addFilterBefore(requestValidationFilter, BasicAuthenticationFilter.class)
       .addFilterAfter(authSuccessLoggingFilter, BasicAuthenticationFilter.class)
-      .addFilterAt(staticKeyAuthenticationFilter, BasicAuthenticationFilter.class)
-//      .authenticationProvider(authenticationProvider)
-//      .httpBasic()
-//      .authenticationEntryPoint(authEntryPoint)
-//      .and()
+      .authenticationProvider(authenticationProvider)
+      .httpBasic()
+      .authenticationEntryPoint(authEntryPoint)
+      .and()
       .authorizeRequests()
       .antMatchers("/buses")
       .hasAnyRole(UserRole.ADMIN.name(), UserRole.CUSTOMER.name())
       .antMatchers("/users")
       .hasAnyRole(UserRole.ADMIN.name())
-      .anyRequest().permitAll();
+      .anyRequest().authenticated();
 
 //    // basic / default spring boot config
 //    http.authorizeRequests()
