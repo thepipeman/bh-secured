@@ -47,4 +47,11 @@ server:
 
 logging:
   level:
-    com.pipecrafts: DEBUG
+    com.pipecrafts: TRACE
+
+
+#------------------------------------
+# Security settings
+#------------------------------------
+security:
+  api-key: abcdefg123456789
