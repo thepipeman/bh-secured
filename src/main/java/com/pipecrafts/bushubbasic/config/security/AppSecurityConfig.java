@@ -3,7 +3,6 @@ package com.pipecrafts.bushubbasic.config.security;
 import com.pipecrafts.bushubbasic.common.management.user.UserRole;
 import com.pipecrafts.bushubbasic.common.security.csrf.CsrfTokenLoggerFilter;
 import com.pipecrafts.bushubbasic.common.security.filter.AuthSuccessLoggingFilter;
-import com.pipecrafts.bushubbasic.common.security.filter.RequestValidationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,16 +17,16 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final AuthenticationProvider authenticationProvider;
   private final AuthEntryPoint authEntryPoint;
-    private final RequestValidationFilter requestValidationFilter;
   private final AuthSuccessLoggingFilter authSuccessLoggingFilter;
-//  private final StaticKeyAuthenticationFilter staticKeyAuthenticationFilter;
   private final CsrfTokenLoggerFilter csrfTokenLoggerFilter;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     http
-      .addFilterBefore(requestValidationFilter, BasicAuthenticationFilter.class)
+      .csrf(c -> {
+        c.ignoringAntMatchers("/buses");
+      })
       .addFilterAfter(authSuccessLoggingFilter, BasicAuthenticationFilter.class)
       .addFilterAfter(csrfTokenLoggerFilter, CsrfFilter.class)
       .authenticationProvider(authenticationProvider)
@@ -40,11 +39,5 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/users")
       .hasAnyRole(UserRole.ADMIN.name())
       .anyRequest().authenticated();
-
-//    // basic / default spring boot config
-//    http.authorizeRequests()
-//      .anyRequest().authenticated();
-
-//    http.csrf().disable();
   }
 }
